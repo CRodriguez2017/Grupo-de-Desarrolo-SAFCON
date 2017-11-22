@@ -20,18 +20,22 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     /**
      * Creates new form GestionDeLogros
      */
-    ConexionBD cone, cone2, cone3, cone4;
+    ConexionBD cone, cone2, cone3, cone4, cone5;
     DefaultTableModel modelo;
+    int idMaterias;
+    int idPeriodo;
     public GestionDeLogros() {
         cone = new ConexionBD();
         cone2 = new ConexionBD();
         cone3 = new ConexionBD();
         cone4 = new ConexionBD();
+        cone5 = new ConexionBD();
         initComponents();
         cargarId();
         cargarMaterias();
         cargarPeriodo();
         consultar("");
+        cargarPorcentaje();
     }
      
     public void cargarId(){ 
@@ -46,7 +50,18 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void cargarPorcentaje(){ 
+        try{
+            ResultSet rs = cone5.consultaBD("SELECT SUM(Porcentaje) From Logros"); 
+            if (rs.next()) {
+                int porcentaje = rs.getInt("SUM(Porcentaje)");
+                jLabel4.setText(porcentaje+"");
+            } 
+        } 
+        catch(SQLException ex){
+            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
             
     public void cargarPeriodo(){ 
         try{
@@ -107,6 +122,9 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -144,6 +162,14 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
+        jPopupMenu1.setComponentPopupMenu(jPopupMenu1);
+
+        jMenuItem1.setText("Eliminar");
+        jPopupMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Modificar");
+        jPopupMenu1.add(jMenuItem2);
+
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -154,7 +180,19 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Materia");
 
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+
         jLabel9.setText("Periodo");
+
+        jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox3ItemStateChanged(evt);
+            }
+        });
 
         jLabel6.setText("Nombre del logro");
 
@@ -185,6 +223,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
             }
         ));
+        jTable2.setComponentPopupMenu(jPopupMenu1);
         jScrollPane3.setViewportView(jTable2);
 
         jLabel2.setText("Total:");
@@ -307,12 +346,12 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(20, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addGap(28, 28, 28)
                         .addComponent(jButton1)
                         .addGap(47, 47, 47))))
@@ -328,6 +367,33 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         consultar(jTextField3.getText());
     }//GEN-LAST:event_jTextField3KeyReleased
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+//        try{
+//            ConexionBD cone7 = new ConexionBD();
+//            ResultSet rs = cone7.consultaBD("SELECT id FROM Materias WHERE Nombre="+jComboBox2.getSelectedItem());
+//            while(rs.next()){
+//                 idMaterias = rs.getInt("id");
+//            }
+//            
+//        } 
+//        catch(SQLException ex){
+//            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+//        try{
+//            ConexionBD cone8 = new ConexionBD();
+//            ResultSet rs = cone8.consultaBD("SELECT id FROM Periodo WHERE Nombre="+jComboBox3.getSelectedItem());
+//            while(rs.next()){
+//                 idPeriodo = rs.getInt("id");
+//            }
+//        } 
+//        catch(SQLException ex){
+//            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -347,6 +413,9 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
