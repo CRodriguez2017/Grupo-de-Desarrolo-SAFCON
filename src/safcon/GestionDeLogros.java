@@ -52,7 +52,8 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     }
     public void cargarPorcentaje(){ 
         try{
-            ResultSet rs = cone5.consultaBD("SELECT SUM(Porcentaje) From Logros"); 
+            ResultSet rs = cone5.consultaBD("SELECT SUM(Porcentaje) From Logros "
+                    + " where id_Materias="+idMaterias+" AND Periodo="+idPeriodo+""); 
             if (rs.next()) {
                 int porcentaje = rs.getInt("SUM(Porcentaje)");
                 jLabel4.setText(porcentaje+"");
@@ -95,7 +96,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         modelo = new DefaultTableModel(null, columnNames); 
         try{
             ResultSet rs = cone4.consultaBD("SELECT id, Nombre, Porcentaje, Tipo FROM Logros"
-                    + " where Nombre like '%"+valor+"%' order by id ASC");
+                    + " where id_Materias="+idMaterias+" AND Periodo="+idPeriodo+" AND Nombre like '%"+valor+"%' order by id ASC");
             String fila[]= new String[4];
             while (rs.next()){
                 fila[0]=rs.getString("id");
@@ -106,6 +107,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                 modelo.addRow(fila);
             }
             jTable2.setModel(modelo);
+            cargarPorcentaje();
         }
         catch(SQLException ex){
             Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
@@ -372,7 +374,15 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    int id= Integer.parseInt(jLabel12.getText()); 
+    int Porcentaje= Integer.parseInt(jTextField1.getText()); 
+    String Nombre= jTextField2.getText(); 
+    String Descripcion= jTextArea1.getText(); 
+    String Tipo = (String) jComboBox1.getSelectedItem();
+    
+    ConexionBD cone9 = new ConexionBD();
+    cone9.modificaBD("Insert into Logros values("+id+",'"+Nombre+"',"+Porcentaje+",'"+Descripcion+"',"+idPeriodo+","+idMaterias+",'"+Tipo+"')");
+    consultar("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
@@ -380,30 +390,31 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-//        try{
-//            ConexionBD cone7 = new ConexionBD();
-//            ResultSet rs = cone7.consultaBD("SELECT id FROM Materias WHERE Nombre="+jComboBox2.getSelectedItem());
-//            while(rs.next()){
-//                 idMaterias = rs.getInt("id");
-//            }
-//            
-//        } 
-//        catch(SQLException ex){
-//            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try{
+            ConexionBD cone7 = new ConexionBD();
+            ResultSet rs = cone7.consultaBD("SELECT id FROM Materias WHERE Nombre='"+jComboBox2.getSelectedItem()+"'");
+            while(rs.next()){
+                 idMaterias = rs.getInt("id");
+            }
+            
+        } 
+        catch(SQLException ex){
+            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
-//        try{
-//            ConexionBD cone8 = new ConexionBD();
-//            ResultSet rs = cone8.consultaBD("SELECT id FROM Periodo WHERE Nombre="+jComboBox3.getSelectedItem());
-//            while(rs.next()){
-//                 idPeriodo = rs.getInt("id");
-//            }
-//        } 
-//        catch(SQLException ex){
-//            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try{
+            ConexionBD cone8 = new ConexionBD();
+            ResultSet rs = cone8.consultaBD("SELECT id FROM Periodo WHERE Nombre='"+jComboBox3.getSelectedItem()+"'");
+            while(rs.next()){
+                 idPeriodo = rs.getInt("id");
+                      consultar("");
+            }
+        } 
+        catch(SQLException ex){
+            Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jComboBox3ItemStateChanged
 
 
