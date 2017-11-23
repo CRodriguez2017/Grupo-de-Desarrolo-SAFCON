@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,16 +21,18 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     /**
      * Creates new form GestionDeLogros
      */
-    ConexionBD cone, cone2, cone3, cone4, cone5;
+    ConexionBD cone, cone2, cone3, cone4, cone5, cone9;
     DefaultTableModel modelo;
     int idMaterias;
     int idPeriodo;
+    int PorcentajeValido, numero2;
     public GestionDeLogros() {
         cone = new ConexionBD();
         cone2 = new ConexionBD();
         cone3 = new ConexionBD();
         cone4 = new ConexionBD();
         cone5 = new ConexionBD();
+        cone9 = new ConexionBD();
         initComponents();
         cargarId();
         cargarMaterias();
@@ -55,7 +58,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             ResultSet rs = cone5.consultaBD("SELECT SUM(Porcentaje) From Logros "
                     + " where id_Materias="+idMaterias+" AND Periodo="+idPeriodo+""); 
             if (rs.next()) {
-                int porcentaje = rs.getInt("SUM(Porcentaje)");
+                 int porcentaje = rs.getInt("SUM(Porcentaje)");
                 jLabel4.setText(porcentaje+"");
             } 
         } 
@@ -108,6 +111,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             }
             jTable2.setModel(modelo);
             cargarPorcentaje();
+            cargarId();
         }
         catch(SQLException ex){
             Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,6 +173,11 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jPopupMenu1.setComponentPopupMenu(jPopupMenu1);
 
         jMenuItem1.setText("Eliminar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jPopupMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Modificar");
@@ -202,6 +211,12 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Porcentaje (Valor del Logro)");
 
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
+            }
+        });
+
         jLabel11.setText("Descripcion del Logro");
 
         jTextArea1.setColumns(20);
@@ -209,6 +224,11 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Crear Logro");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -282,26 +302,27 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addGap(72, 72, 72)
-                                        .addComponent(jLabel7)
-                                        .addContainerGap(69, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(jLabel5)
-                                .addGap(54, 54, 54)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(49, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addContainerGap())))))
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(26, 26, 26)
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButton1)
+                                                .addGap(72, 72, 72)
+                                                .addComponent(jLabel7))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(61, 61, 61)
+                                        .addComponent(jLabel5)
+                                        .addGap(54, 54, 54)
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(49, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,15 +395,29 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    cargarPorcentaje();
+    
     int id= Integer.parseInt(jLabel12.getText()); 
     int Porcentaje= Integer.parseInt(jTextField1.getText()); 
     String Nombre= jTextField2.getText(); 
     String Descripcion= jTextArea1.getText(); 
     String Tipo = (String) jComboBox1.getSelectedItem();
     
-    ConexionBD cone9 = new ConexionBD();
-    cone9.modificaBD("Insert into Logros values("+id+",'"+Nombre+"',"+Porcentaje+",'"+Descripcion+"',"+idPeriodo+","+idMaterias+",'"+Tipo+"')");
-    consultar("");
+    
+        if ((PorcentajeValido <= 100) && (Porcentaje > 0)) {
+            ConexionBD cone9 = new ConexionBD();
+            cone9.modificaBD("Insert into Logros values("+id+",'"+Nombre+"',"+Porcentaje+",'"+Descripcion+"',"+idPeriodo+","+idMaterias+",'"+Tipo+"')");
+            consultar("");
+            cargarId();
+             JOptionPane.showMessageDialog(rootPane,"Logro creado satisfatoriamente");
+             jTextField1.setText("");
+             jTextField2.setText("");
+             jTextArea1.setText("");
+        }else{
+            JOptionPane.showMessageDialog(rootPane,"No se puede crear el Logro porque sobrepasa "
+                    + " el porcentaje requerido que es 100% \n Por favor intente de nuevo");
+        }
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
@@ -395,6 +430,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             ResultSet rs = cone7.consultaBD("SELECT id FROM Materias WHERE Nombre='"+jComboBox2.getSelectedItem()+"'");
             while(rs.next()){
                  idMaterias = rs.getInt("id");
+                 consultar("");
             }
             
         } 
@@ -416,6 +452,32 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jComboBox3ItemStateChanged
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        String id = (String) modelo.getValueAt(jTable2.getSelectedRow(),0);
+        int idEntero = Integer.parseInt(id);
+        cone9.modificaBD("delete from Logros where id = "+idEntero+"");
+        consultar("");
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        
+        int numero1 = Integer.parseInt(jLabel4.getText());
+        numero2 = Integer.parseInt(jTextField1.getText());
+        int resultado = numero1 + numero2;
+        PorcentajeValido = resultado ;
+    }//GEN-LAST:event_jButton1MousePressed
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        numero2 = Integer.parseInt(jTextField1.getText());
+        if (numero2 == 0) {
+            JOptionPane.showMessageDialog(rootPane, "El porcentaje no puede ser 0. \n "
+                    + " Por favor intente de nuevo");
+            jTextField1.setText("");
+        }
+        
+    }//GEN-LAST:event_jTextField1FocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
