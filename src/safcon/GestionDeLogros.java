@@ -24,7 +24,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     /**
      * Creates new form GestionDeLogros
      */
-    ConexionBD cone, cone2, cone3, cone4, cone5, cone9;
+    ConexionBD cone, cone2, cone3, cone4, cone5, cone9, cone10, cone12;
     DefaultTableModel modelo;
     int idMaterias;
     int idPeriodo;
@@ -36,6 +36,8 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         cone4 = new ConexionBD();
         cone5 = new ConexionBD();
         cone9 = new ConexionBD();
+        cone10 = new ConexionBD();
+        cone12 = new ConexionBD();
         initComponents();
         cargarId();
         cargarMaterias();
@@ -43,6 +45,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         consultar("");
         cargarPorcentaje();
         SNumeros(jTextField1);
+        jButton2.setVisible(false);
     }
      
     public void cargarId(){ 
@@ -184,6 +187,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -209,6 +213,11 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jPopupMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Modificar");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jPopupMenu1.add(jMenuItem2);
 
         setClosable(true);
@@ -296,6 +305,13 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         jLabel7.setText("C.R");
 
+        jButton2.setText("Actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -341,21 +357,24 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton1)
-                                                .addGap(72, 72, 72)
-                                                .addComponent(jLabel7))))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addGap(61, 61, 61)
                                         .addComponent(jLabel5)
                                         .addGap(54, 54, 54)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 39, Short.MAX_VALUE)))
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(26, 26, 26)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButton1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                                .addComponent(jButton2)
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jLabel7)))))
+                                .addGap(24, 24, 24)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -412,17 +431,18 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(26, Short.MAX_VALUE))
+                        .addContainerGap(30, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
                             .addComponent(jButton1)
-                            .addComponent(jLabel7))
-                        .addGap(47, 47, 47))))
+                            .addComponent(jButton2))
+                        .addGap(42, 42, 42))))
         );
 
         pack();
@@ -490,8 +510,16 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         String id = (String) modelo.getValueAt(jTable2.getSelectedRow(),0);
         int idEntero = Integer.parseInt(id);
-        cone9.modificaBD("delete from Logros where id = "+idEntero+"");
-        consultar("");
+        if (jTable2.getSelectedRow()== -1) {
+                JOptionPane.showConfirmDialog(rootPane,"Debe seleccionar una registro de la tabla");
+            }else{
+                int confirm=JOptionPane.showConfirmDialog(rootPane,"Desea eliminar el regristro");
+                    if (confirm==0) {
+                        String cod=(String)modelo.getValueAt(jTable2.getSelectedRow(),0);
+                        cone10.modificaBD("DELETE FROM Logros WHERE id= "+ idEntero+"");
+                        consultar("");
+                    }
+            }
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -517,9 +545,61 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2FocusLost
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        jButton2.setVisible(true);
+        jButton1.setVisible(false);
+        try {
+            
+            String id=(String)modelo.getValueAt(jTable2.getSelectedRow(),0);
+            ConexionBD cone11=new ConexionBD();
+            ResultSet rs5 = cone11.consultaBD("SELECT * FROM Logros WHERE id= " + id);
+                
+            while(rs5.next()){
+                    jLabel12.setText(rs5.getString("id"));
+                    jTextField2.setText(rs5.getString("Nombre"));
+                    jTextField1.setText(rs5.getString("Porcentaje"));
+                    jTextArea1.setText(rs5.getString("Descripcion"));
+                    jComboBox3.setSelectedItem(rs5.getString("Periodo"));
+                    jComboBox2.setSelectedItem(rs5.getString("id_Materias"));
+                    jComboBox1.setSelectedItem(rs5.getString("Tipo"));
+                    
+                }
+                
+        }  catch (SQLException ex) {
+           Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int id= Integer.parseInt(jLabel12.getText()); 
+        int Porcentaje= Integer.parseInt(jTextField1.getText()); 
+        String Nombre= jTextField2.getText(); 
+        String Descripcion= jTextArea1.getText(); 
+        String Tipo = (String) jComboBox1.getSelectedItem();
+         
+        if ((PorcentajeValido <= 100) && (Porcentaje > 0)) {
+            ConexionBD cone9 = new ConexionBD();
+            cone12.modificaBD("update Logros set Nombre = '"+Nombre+"', Porcentaje = "+Porcentaje+", "
+                + " Descripcion =  '"+Descripcion+"', Periodo = "+idPeriodo+", id_Materias = "+idMaterias+", Tipo = '"+Tipo+"' where "
+                + "id = "+id+""); 
+            consultar("");
+            cargarId();
+             JOptionPane.showMessageDialog(rootPane,"Logro actualizado satisfatoriamente");
+             jTextField1.setText("");
+             jTextField2.setText("");
+             jTextArea1.setText("");
+        }else{
+            JOptionPane.showMessageDialog(rootPane,"Valor invalido, intente nuevamente.");
+        }
+        // TODO add your handling code here:
+        jButton2.setVisible(false);
+        jButton1.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
