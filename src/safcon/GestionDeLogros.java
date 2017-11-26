@@ -5,11 +5,14 @@
  */
 package safcon;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,6 +42,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         cargarPeriodo();
         consultar("");
         cargarPorcentaje();
+        SNumeros(jTextField1);
     }
      
     public void cargarId(){ 
@@ -117,6 +121,30 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             Logger.getLogger(GestionDeLogros.class.getName()).log(Level.SEVERE, null, ex);
         }
     
+    }
+    public void SNumeros(JTextField a){
+        a.addKeyListener(new KeyAdapter() {
+            public void KeyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });    
+        
+    }
+    public void SLetras(JTextField a){
+        a.addKeyListener(new KeyAdapter() {
+            public void KeyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (Character.isDigit(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });    
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -239,6 +267,12 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "INSTITUCIONAL", "ACADEMICO" }));
 
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField2FocusLost(evt);
+            }
+        });
+
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -303,8 +337,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -322,7 +355,8 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel5)
                                         .addGap(54, 54, 54)
                                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(49, Short.MAX_VALUE))))))
+                                .addGap(0, 39, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,7 +427,8 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     cargarPorcentaje();
     
@@ -414,8 +449,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
              jTextField2.setText("");
              jTextArea1.setText("");
         }else{
-            JOptionPane.showMessageDialog(rootPane,"No se puede crear el Logro porque sobrepasa "
-                    + " el porcentaje requerido que es 100% \n Por favor intente de nuevo");
+            JOptionPane.showMessageDialog(rootPane,"Valor invalido, intente nuevamente.");
         }
     
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -471,13 +505,17 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         numero2 = Integer.parseInt(jTextField1.getText());
-        if (numero2 == 0) {
-            JOptionPane.showMessageDialog(rootPane, "El porcentaje no puede ser 0. \n "
+        if ((numero2 == 0) && (numero2 < 0)) {
+            JOptionPane.showMessageDialog(rootPane, "Valor no valido. \n "
                     + " Por favor intente de nuevo");
             jTextField1.setText("");
         }
         
     }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2FocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
