@@ -44,7 +44,6 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         cargarPeriodo();
         consultar("");
         cargarPorcentaje();
-        SNumeros(jTextField1);
         jButton2.setVisible(false);
     }
      
@@ -532,8 +531,9 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1MousePressed
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        SNumeros(jTextField1);
         numero2 = Integer.parseInt(jTextField1.getText());
-        if ((numero2 == 0) && (numero2 < 0)) {
+        if (numero2 == 0){
             JOptionPane.showMessageDialog(rootPane, "Valor no valido. \n "
                     + " Por favor intente de nuevo");
             jTextField1.setText("");
