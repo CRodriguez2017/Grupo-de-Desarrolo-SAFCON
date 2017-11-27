@@ -48,6 +48,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         consultar("");
         cargarPorcentaje();
         jButton2.setVisible(false);
+        SNumeros(jTextField1);
     }
      
     public void cargarId(){ 
@@ -134,6 +135,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                 if (Character.isLetter(c)) {
                     getToolkit().beep();
                     e.consume();
+                    System.out.println("Entra "+c);
                 }
             }
         });    
@@ -255,11 +257,21 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                 jTextField1FocusLost(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
 
         jLabel11.setText("Descripcion del Logro");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Crear Logro");
@@ -281,6 +293,11 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField2FocusLost(evt);
+            }
+        });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
             }
         });
 
@@ -535,7 +552,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
                                     String cod=(String)modelo.getValueAt(jTable2.getSelectedRow(),0);
                                             cone10.modificaBD("DELETE FROM Logros WHERE id= "+ idEntero+"");
                                             consultar("");
-                                    JOptionPane.showMessageDialog(rootPane,"Usuario Eliminado");        
+                                    JOptionPane.showMessageDialog(rootPane,"Logro Eliminado");        
                                 }else{
                                     JOptionPane.showMessageDialog(rootPane,"No se puede eliminar, datos incoherentes");
                                 }
@@ -553,17 +570,6 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         int resultado = numero1 + numero2;
         PorcentajeValido = resultado ;
     }//GEN-LAST:event_jButton1MousePressed
-
-    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
-        SNumeros(jTextField1);
-        numero2 = Integer.parseInt(jTextField1.getText());
-        if (numero2 == 0){
-            JOptionPane.showMessageDialog(rootPane, "Valor no valido. \n "
-                    + " Por favor intente de nuevo");
-            jTextField1.setText("");
-        }
-        
-    }//GEN-LAST:event_jTextField1FocusLost
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
         // TODO add your handling code here:
@@ -619,6 +625,40 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         jButton2.setVisible(false);
         jButton1.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        char c = evt.getKeyChar();
+                if (Character.isDigit(c)) {
+                    getToolkit().beep();
+                    evt.consume();
+                }
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        numero2 = Integer.parseInt(jTextField1.getText());
+        if (numero2 == 0) {
+            JOptionPane.showMessageDialog(null, "Valor no valido. \n "
+                    + "Por favor intente de nuevo");
+                    jTextField1.setText("");
+        }
+    }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        char c = evt.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    evt.consume();
+                    System.out.println("Entra "+c);
+                }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyTyped
+        char c = evt.getKeyChar();
+                if (Character.isDigit(c)) {
+                    getToolkit().beep();
+                    evt.consume();
+                }
+    }//GEN-LAST:event_jTextArea1KeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
