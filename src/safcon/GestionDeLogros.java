@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -514,12 +517,33 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             }else{
                 int confirm=JOptionPane.showConfirmDialog(rootPane,"Desea eliminar el regristro");
                     if (confirm==0) {
-                        String cod=(String)modelo.getValueAt(jTable2.getSelectedRow(),0);
-                        cone10.modificaBD("DELETE FROM Logros WHERE id= "+ idEntero+"");
-                        consultar("");
+                        String ClaveReservada = "123";
+                            JPanel panel = new JPanel();
+                            JLabel label = new JLabel("Ingrese su contraseña:");
+                            JPasswordField pass = new JPasswordField(10);
+                            panel.add(label);
+                            panel.add(pass);
+        
+                        String[] Opciones = new String[]{"OK", "Cancel"};
+                    int option = JOptionPane.showOptionDialog(null, panel, "Verificacion de Usuario",
+                                     JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                     null, Opciones, Opciones[1]);
+                        if(option == 0){
+                            char[] password = pass.getPassword();
+                            String password2 = pass.getText();
+                                if (ClaveReservada.equals(password2)) {
+                                    String cod=(String)modelo.getValueAt(jTable2.getSelectedRow(),0);
+                                            cone10.modificaBD("DELETE FROM Logros WHERE id= "+ idEntero+"");
+                                            consultar("");
+                                    JOptionPane.showMessageDialog(rootPane,"Usuario Eliminado");        
+                                }else{
+                                    JOptionPane.showMessageDialog(rootPane,"No se puede eliminar, datos incoherentes");
+                                }
+                         }
+                        
                     }
             }
-        
+       
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
