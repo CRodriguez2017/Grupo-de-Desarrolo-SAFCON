@@ -66,7 +66,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
     public void cargarPorcentaje(){ 
         try{
             ResultSet rs = cone5.consultaBD("SELECT SUM(Porcentaje) From Logros "
-                    + " where id_Materias="+idMaterias+" AND Periodo="+idPeriodo+""); 
+                    + " where id_Materia="+idMaterias+" AND id_Periodo="+idPeriodo+""); 
             if (rs.next()) {
                  int porcentaje = rs.getInt("SUM(Porcentaje)");
                 jLabel4.setText(porcentaje+"");
@@ -108,14 +108,14 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         String columnNames[]={"ID Logro", "Nombre Logro", "Porcentaje", "Tipo"}; 
         modelo = new DefaultTableModel(null, columnNames); 
         try{
-            ResultSet rs = cone4.consultaBD("SELECT id, Nombre, Porcentaje, Tipo FROM Logros"
-                    + " where id_Materias="+idMaterias+" AND Periodo="+idPeriodo+" AND Nombre like '%"+valor+"%' order by id ASC");
+            ResultSet rs = cone4.consultaBD("SELECT id, Nombre, Porcentaje, tipo_logro FROM Logros"
+                    + " where id_Materia="+idMaterias+" AND id_Periodo="+idPeriodo+" AND Nombre like '%"+valor+"%' order by id ASC");
             String fila[]= new String[4];
             while (rs.next()){
                 fila[0]=rs.getString("id");
                 fila[1]=rs.getString("Nombre");
                 fila[2]=rs.getString("Porcentaje");
-                fila[3]=rs.getString("Tipo");
+                fila[3]=rs.getString("tipo_logro");
                 
                 modelo.addRow(fila);
             }
@@ -587,11 +587,11 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
             while(rs5.next()){
                     jLabel12.setText(rs5.getString("id"));
                     jTextField2.setText(rs5.getString("Nombre"));
+                    jComboBox1.setSelectedItem(rs5.getString("tipo_logro"));
+                    jComboBox2.setSelectedItem(rs5.getString("id_Materia"));
+                    jComboBox3.setSelectedItem(rs5.getString("id_Periodo"));
                     jTextField1.setText(rs5.getString("Porcentaje"));
-                    jTextArea1.setText(rs5.getString("Descripcion"));
-                    jComboBox3.setSelectedItem(rs5.getString("Periodo"));
-                    jComboBox2.setSelectedItem(rs5.getString("id_Materias"));
-                    jComboBox1.setSelectedItem(rs5.getString("Tipo"));
+//                    jTextArea1.setText(rs5.getString("Descripcion"));
                     
                 }
                 
@@ -639,7 +639,7 @@ public class GestionDeLogros extends javax.swing.JInternalFrame {
         if (numero2 == 0) {
             JOptionPane.showMessageDialog(null, "Valor no valido. \n "
                     + "Por favor intente de nuevo");
-                    jTextField1.setText("");
+            jTextField1.setText("");
         }
     }//GEN-LAST:event_jTextField1FocusLost
 
